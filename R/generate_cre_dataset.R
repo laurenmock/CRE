@@ -54,7 +54,7 @@
 #' Non-integer values will be converted into an integer number.
 #' @param rho A positive double number that represents the correlation
 #' within the covariates (default: 0, range: [0,1)).
-#' @param n_rules The number of causal rules (default: 2, range: {1,2,3,4}).
+#' @param n_rules The number of causal rules (default: 2, range: \{1,2,3,4\}).
 #' @param effect_size The treatment effect size magnitude (default: 2,
 #' range: \eqn{\geq}0).
 #' @param p The number of covariates (default: 10).
