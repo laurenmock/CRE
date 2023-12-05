@@ -12,7 +12,7 @@ a treatment variable, and various features."><!-- mathjax --><script src="https:
     
     <a class="navbar-brand me-2" href="../index.html">CRE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,18 +91,20 @@ including:</p><ul><li><p><em>Parameters for Honest Splitting</em></p><ul><li><p>
 (default: 0.5).</p></li>
 </ul></li>
 <li><p><em>Parameters for Discovery and Inference</em></p><ul><li><p><em>ite_method</em>: The method for ITE (pseudo-outcome) estimation
-(default: "aipw", options: "aipw" for Augmented Inverse Probability
-Weighting, "cf" for Causal Forest, "bart" for Causal Bayesian Additive
-Regression Trees, "slearner" for S-Learner, "tlearner" for T-Learner,
-"xlearner" for X-Learner, "tpoisson" for T-Learner with Poisson
-regression).</p></li>
+(default: <code>"aipw"</code>, options: <code>"aipw"</code> for Augmented Inverse
+Probability Weighting, <code>"cf"</code> for Causal Forest, <code>"bart"</code> for
+Causal Bayesian Additive Regression Trees, <code>"slearner"</code> for S-Learner,
+<code>"tlearner"</code> for T-Learner, <code>"xlearner"</code> for X-Learner,
+<code>"tpoisson"</code> for T-Learner with Poisson regression).</p></li>
 <li><p><em>learner_ps</em>: The model for the propensity score estimation
-(default: "SL.xgboost", options: any SuperLearner prediction model i.e.,
-"SL.lm", "SL.svm", used only for "aipw","bart","cf" ITE estimators).</p></li>
+(default: <code>"SL.xgboost"</code>, options: any SuperLearner prediction model
+i.e., <code>"SL.lm"</code>, <code>"SL.svm"</code>, used only for <code>"aipw"</code>,
+<code>"bart"</code>, <code>"cf"</code> ITE estimators).</p></li>
 <li><p><em>learner_y</em>: The model for the outcome estimation
-(default: "SL.xgboost", options: any SuperLearner prediction model i.e.,
-"SL.lm", "SL.svm", used only for "aipw","slearner","tlearner" and
-"xlearner" ITE estimators).</p></li>
+(default: <code>"SL.xgboost"</code>, options: any SuperLearner prediction model
+i.e., <code>"SL.lm"</code>, <code>"SL.svm"</code>, used only for <code>"aipw"</code>,
+<code>"slearner"</code>, <code>"tlearner"</code> and <code>"xlearner"</code> ITE
+estimators).</p></li>
 </ul></li>
 </ul></dd>
 
@@ -121,17 +123,17 @@ carry out an aggressive pruning (default: 0.025).</p></li>
 <li><p><em>t_ext</em>: The threshold to truncate too generic or too specific (extreme)
 rules (default: 0.01, range: [0, 0.5)).</p></li>
 <li><p><em>t_corr</em>: The threshold to define correlated rules (default: 1,
-range: [0,+inf)).</p></li>
+range: <code>[0,+inf)</code>).</p></li>
 <li><p><em>stability_selection</em>: Method for stability selection for selecting the
-rules. "vanilla" for stability selection, "error_control"
-for stability selection with error control and "no" for no stability
-selection (default: "vanilla").</p></li>
+rules. <code>"vanilla"</code> for stability selection, <code>"error_control"</code>
+for stability selection with error control and  <code>"no"</code> for no
+stability selection (default: <code>"vanilla"</code>).</p></li>
 <li><p><em>B</em>: Number of bootstrap samples for stability selection in rules
 selection and uncertainty quantification in estimation (default: 20).</p></li>
 <li><p><em>subsample</em>: Bootstrap ratio subsample for stability selection in rules
 selection and uncertainty quantification in estimation (default: 0.5).</p></li>
 </ul></li>
-<li><p><em>Method specific hyper parameters</em></p><ul><li><p><em>offset</em>: Name of the covariate to use as offset (i.e. "x1") for
+<li><p><em>Method specific hyper parameters</em></p><ul><li><p><em>offset</em>: Name of the covariate to use as offset (i.e., <code>"x1"</code>) for
 T-Poisson ITE estimation. Use <code>NULL</code> if offset is not used (default:
 <code>NULL</code>).</p></li>
 <li><p><em>cutoff</em>:  Threshold (percentage) defining the minimum cutoff value for
@@ -172,7 +174,7 @@ decomposition estimates with corresponding uncertainty quantification,</p></dd>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     
-<ul><li><p>If <code>intervention_vars</code> are provided, it's important to note that the
+<ul><li><p>If <code>intervention_vars</code> are provided, it is important to note that the
 individual treatment effect will still be computed using all covariates.</p></li>
 </ul></div>
 

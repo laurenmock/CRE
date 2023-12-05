@@ -12,7 +12,7 @@ a treatment vector, a covariate matrix, and a desired algorithm."><!-- mathjax -
     
     <a class="navbar-brand me-2" href="../index.html">CRE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,19 +88,19 @@ a treatment vector, a covariate matrix, and a desired algorithm.</p>
 <dd><p>A method for estimating the Individual Treatment Effect.
 Some methods requires additional parameters. These parameters are mentioned
 in the indented blocks for each method and their definitions are provided at
-the end of this parameters list.</p><ul><li><p><code>slearner</code>: S-Learner.</p><ul><li><p><code>learner_y</code></p></li>
+the end of this parameters list.</p><ul><li><p><code>"slearner"</code>: S-Learner.
+- <code>learner_y</code></p></li>
+<li><p><code>"tlearner"</code>: T-Learner.</p><ul><li><p><code>learner_y</code></p></li>
 </ul></li>
-<li><p><code>tlearner</code>: T-Learner.</p><ul><li><p><code>learner_y</code></p></li>
+<li><p><code>"tpoisson"</code>: T-Poisson.</p><ul><li><p><code>offset</code></p></li>
 </ul></li>
-<li><p><code>tpoisson</code>: T-Poisson.</p><ul><li><p><code>offset</code></p></li>
+<li><p><code>"xlearner"</code>: X-Learner.</p><ul><li><p><code>learner_y</code></p></li>
 </ul></li>
-<li><p><code>xlearner</code>: X-Learner.</p><ul><li><p><code>learner_y</code></p></li>
+<li><p><code>"aipw"</code>: Augmented Inverse Probability Weighting.</p><ul><li><p><code>learner_ps</code> and  <code>learner_y</code></p></li>
 </ul></li>
-<li><p><code>aipw</code>: Augmented Inverse Probability Weighting.</p><ul><li><p><code>learner_ps</code> and  <code>learner_y</code></p></li>
+<li><p><code>"bart"</code>: Bayesian Additive Regression Trees.</p><ul><li><p><code>learner_ps</code></p></li>
 </ul></li>
-<li><p><code>bart</code>: Bayesian Additive Regression Trees.</p><ul><li><p><code>learner_ps</code></p></li>
-</ul></li>
-<li><p><code>cf</code>: Causal Forest.</p><ul><li><p><code>learner_ps</code></p></li>
+<li><p><code>"cf"</code>: Causal Forest.</p><ul><li><p><code>learner_ps</code></p></li>
 </ul></li>
 </ul></dd>
 
@@ -125,7 +125,7 @@ the end of this parameters list.</p><ul><li><p><code>slearner</code>: S-Learner.
 includes libraries for the SuperLearner package.</p></li>
 <li><p><strong>learner_y</strong>: An estimation model for the outcome. This includes
 libraries for the SuperLearner package.</p></li>
-<li><p><strong>offset</strong>: Name of the covariate to use as offset (i.e. 'x1') for
+<li><p><strong>offset</strong>: Name of the covariate to use as offset (i.e. <code>"x1"</code>) for
 Poisson ITE Estimation. <code>NULL</code> if offset is not used.</p></li>
 </ul></div>
 
