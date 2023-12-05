@@ -1,4 +1,4 @@
-# CRE Develop
+# CRE 0.2.5 (2023-12-5)
 
 ## Added
 * Add (vanilla) Stability Selection (without Error Control).
