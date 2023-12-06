@@ -1,6 +1,7 @@
 test_that("generate_cre_dataset works as expected.", {
 
   # Incorrect n input
+  skip_on_cran()
   expect_error(generate_cre_dataset(n = -100, rho = 0,
                                     n_rules = 2, p = 10, effect_size = 0.5,
                                     binary_outcome = FALSE))

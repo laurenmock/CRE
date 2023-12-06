@@ -1,5 +1,7 @@
 test_that("Poisson ITE Estimated Correctly", {
   # Generate sample data
+  skip_on_cran()
+
   set.seed(8967)
   dataset_cont <- generate_cre_dataset(n = 100, rho = 0, n_rules = 2, p = 10,
                                        effect_size = 0.5,

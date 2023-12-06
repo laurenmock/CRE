@@ -1,5 +1,18 @@
 Resubmission (December 6, 2023):
 
+We appreciate your efforts in reviewing the CRE 0.2.5 package. In this upgrade, we:
+
+- Skipped the tests that causing issue with multiple cores. However, we fully test the package on rhub and Github CI.
+
+
+Best regards, 
+Naeem Khoshnevis 
+RCD - HUIT 
+Harvard University
+
+
+Resubmission (December 6, 2023):
+
 We appreciate your efforts in reviewing the CRE 0.2.5 package and sorry for missing fixing the other URL. In this upgrade, we:
 
 - Corrected invalid URLs.

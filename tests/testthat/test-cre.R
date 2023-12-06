@@ -1,5 +1,6 @@
 test_that("cre Runs Correctly", {
   # Generate sample data
+  skip_on_cran()
   set.seed(2021)
   dataset_cont <- generate_cre_dataset(n = 400, rho = 0, n_rules = 2, p = 10,
                                        effect_size = 2, binary_outcome = FALSE)

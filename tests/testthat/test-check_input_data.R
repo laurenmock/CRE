@@ -1,5 +1,6 @@
 test_that("check_input_data works as expected.", {
 
+  skip_on_cran()
   ds_1 <- generate_cre_dataset(n = 100, rho = 0, n_rules = 2, p = 10,
                                   effect_size = 2, binary_outcome = FALSE)
 

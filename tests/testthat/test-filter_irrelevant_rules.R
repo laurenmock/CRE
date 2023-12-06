@@ -1,6 +1,7 @@
 test_that("Filter ireelevant rules run correctly", {
 
   # Generate sample data
+  skip_on_cran()
   set.seed(181)
   dataset_cont <- generate_cre_dataset(n = 100, rho = 0, n_rules = 2, p = 10,
                                        effect_size = 2, binary_outcome = FALSE)

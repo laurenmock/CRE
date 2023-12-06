@@ -1,5 +1,5 @@
 test_that("Effect Modifiers Extracted Correctly", {
-
+  skip_on_cran()
   X_names <- paste("x", 1:10, sep = "")
   causal_decision_rules_int <- c("x1>0.5 & x2<=0.5",
                                  "x5>0.5 & x6<=0.5",
