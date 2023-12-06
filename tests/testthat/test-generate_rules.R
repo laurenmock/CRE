@@ -1,5 +1,6 @@
 test_that("generate_rules works as expected!", {
   # Generate sample data
+  skip_on_cran()
   set.seed(3784)
   dataset_cont <- generate_cre_dataset(n = 300, rho = 0, n_rules = 2, p = 10,
                                        effect_size = 0.5,

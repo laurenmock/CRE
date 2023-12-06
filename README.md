@@ -75,7 +75,7 @@ __Additional Estimates (not required)__
 **[1]** Options for the ITE estimation are as follows: 
 - [S-Learner](https://CRAN.R-project.org/package=SuperLearner) (`slearner`)
 - [T-Learner](https://CRAN.R-project.org/package=SuperLearner) (`tlearner`)
-- [T-Poisson](https://CRAN.R-project.org/package=stats) (`tpoisson`)
+- T-Poisson (`tpoisson`)
 - [X-Learner](https://CRAN.R-project.org/package=SuperLearner) (`xlearner`)
 - [Augmented Inverse Probability Weighting](https://CRAN.R-project.org/package=SuperLearner) (`aipw`)
 - [Causal Forests](https://CRAN.R-project.org/package=grf) (`cf`)

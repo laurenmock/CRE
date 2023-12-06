@@ -1,5 +1,6 @@
 test_that("Rules Extracted Correctly", {
   # Generate sample data
+  skip_on_cran()
   set.seed(2021)
   dataset_cont <- generate_cre_dataset(n = 500, rho = 0, n_rules = 2, p = 10,
                                        effect_size = 0.5,

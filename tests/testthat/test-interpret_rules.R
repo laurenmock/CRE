@@ -1,5 +1,6 @@
 test_that("Rules Interpreted Correctly", {
   # Generate sample data
+  skip_on_cran()
   set.seed(152)
   dataset_cont <- generate_cre_dataset(n = 100, rho = 0, n_rules = 2, p = 10,
                                        effect_size = 2, binary_outcome = FALSE)

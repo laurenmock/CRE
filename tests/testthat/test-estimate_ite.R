@@ -1,6 +1,7 @@
 test_that("ITE Estimated Correctly", {
 
   #Generate sample data
+  skip_on_cran()
   set.seed(181)
   dts_1 <- generate_cre_dataset(n = 300, rho = 0, n_rules = 2, p = 10,
                                 effect_size = 2, binary_covariates = FALSE,
