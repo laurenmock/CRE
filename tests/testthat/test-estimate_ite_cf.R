@@ -1,6 +1,7 @@
 test_that("CF ITE Estimated Correctly", {
 
   skip_if_not_installed("grf")
+  skip_on_cran()
 
   # Generate sample data
   set.seed(2021)

@@ -4,27 +4,30 @@
 \alias{estimate_cate}
 \title{Estimate the Conditional Average Treatment Effect}
 \usage{
-estimate_cate(rules_matrix, rules_explicit, ite, t_pvalue)
+estimate_cate(rules_matrix, rules_explicit, ite, B = 1, subsample = 1)
 }
 \arguments{
-\item{rules_matrix}{A rules matrix,}
+\item{rules_matrix}{A rules matrix.}
 
 \item{rules_explicit}{A list of select rules in terms of covariate names.}
 
 \item{ite}{The estimated ITEs.}
 
-\item{t_pvalue}{The threshold to define statistically significant rules
-(filter only rules with p-value <= t_pvalue).}
+\item{B}{The number of bootstrap samples for uncertainty quantification in
+estimation.}
+
+\item{subsample}{The bootstrap ratio subsample for uncertainty quantification
+in estimation.}
 }
 \value{
 A list with 2 elements:
 \code{summary}: A data frame summarizing the CATE linear decomposition:
 \itemize{
-\item 'Rule': rule name,
-\item 'Estimate': linear contribution to CATE,
-\item 'CI_lower`: lower bound 95\% confidence interval on the estimate,
-\item 'CI_upper`: upper bound 95\% confidence interval on the estimate,
-\item \code{P-Value}: p-value (from Z-test).
+\item \code{Rule}: rule name,
+\item \code{Estimate}: linear contribution to CATE,
+\item \code{CI_lower}: lower bound 95\% confidence interval on the estimate,
+\item \code{CI_upper}: upper bound 95\% confidence interval on the estimate,
+\item \code{P_Value}: p-value (from Z-test).
 \code{model}: A linear model for CATE-ATE estimation.
 }
 }

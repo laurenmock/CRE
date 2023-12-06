@@ -33,7 +33,7 @@ if (experiment=="main") {
   sample_size <- 2000
   confounding <- "lin"
   dr <- c("x1>0.5 & x2<=0.5", "x5>0.5 & x6<=0.5",
-          "x4>0.5", "x5<=0.5 & x7>0.5 & x8<=0.5")
+          "x4<=0.5", "x5<=0.5 & x7>0.5 & x8<=0.5")
   em <- c("x1","x2","x5","x6","x4","x7","x8")
   max_depth <- 3
 } else if (experiment=="rct") {
@@ -65,35 +65,31 @@ if (experiment=="main") {
 
 # Other Setting
 {
-  n_seeds <- 250
+  n_seeds <- 2
   ratio_dis <- 0.5
   effect_sizes <- seq(0, 5, 0.2)
-  ITE_estimators <- c("aipw","cf",'slearner","tlearner","xlearner","bart")
+  ITE_estimators <- c("aipw","cf","slearner","tlearner","xlearner","bart")
 
   method_params <- list(ratio_dis = ratio_dis,
-                        ite_method_dis = "aipw",
-                        ps_method_dis = "SL.xgboost",
-                        oreg_method_dis = "SL.xgboost",
-                        ite_method_inf = "aipw",
-                        ps_method_inf = "SL.xgboost",
-                        oreg_method_inf = "SL.xgboost")
+                        ite_method = "aipw",
+                        learner_ps = "SL.xgboost",
+                        learner_y = "SL.xgboost")
 
   hyper_params <- list(intervention_vars = NULL,
                        offset = NULL,
-                       ntrees_rf = 40,
-                       ntrees_gbm = 40,
+                       ntrees = 40,
                        node_size = 20,
-                       max_nodes = 2^max_depth,
+                       max_rules = 50,
                        max_depth = max_depth,
                        t_decay = 0.025,
                        t_ext = 0.01,
                        t_corr = 1,
                        t_pvalue = 0.05,
-                       replace = TRUE,
-                       stability_selection = TRUE,
+                       stability_selection = "vanilla",
                        cutoff = cutoff,
                        pfer = 1,
-                       penalty_rl = 1)
+                       B = 20,
+                       subsample = 0.2)
 
   evaluate <- function(ground_truth, prediction) {
     intersect <- intersect(prediction, ground_truth)
@@ -152,13 +148,12 @@ for(effect_size in effect_sizes){
       X <- dataset[["X"]]
       X_names <- colnames(X)
 
-      method_params[["ite_method_dis"]] <- ITE_estimator
-      method_params[["ite_method_inf"]] <- ITE_estimator
+      method_params[["ite_method"]] <- ITE_estimator
       hyper_params[["pfer"]] <- n_rules/(effect_size+1)
       metrics <- tryCatch({
         result <- cre(y, z, X, method_params, hyper_params)
 
-        dr_pred <- result$CATE$Rule[result$CATE$Rule %in% "(BATE)" == FALSE]
+        dr_pred <- result$CATE$Rule[result$CATE$Rule %in% "(ATE)" == FALSE]
         metrics_dr <- evaluate(dr, dr_pred)
         em_pred <- extract_effect_modifiers(dr_pred, X_names)
         metrics_em <- evaluate(em, em_pred)
@@ -185,7 +180,7 @@ colnames(discovery) <- c("method","effect_size","seed",
 rownames(discovery) <- 1:nrow(discovery)
 
 # Save results
-results_dir <- "~/CRE/functional_tests/results/"
+results_dir <- "~/Desktop/CRE/functional_tests/results/"
 if (!dir.exists(results_dir)) {
   dir.create(results_dir)
 }

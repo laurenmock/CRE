@@ -1,5 +1,6 @@
 test_that("Evaluate Run Correctly", {
 
+  skip_on_cran()
   cdr_pred <- c("x1>0.5 & x2<=0.5",
                "x5>0.5 & x6<=0.5",
                "x4<=0",
