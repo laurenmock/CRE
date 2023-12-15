@@ -226,6 +226,16 @@ Please note that the CRE project is released with a [Contributor Code of Conduct
 
 Causal Rule Ensemble ([methodological paper](https://arxiv.org/abs/2009.09036))
 ```bibtex
+@article{bargagli2023causal,
+  title={{Causal rule ensemble: Interpretable Discovery and Inference of Heterogeneous Treatment Effects}},
+  author={Bargagli-Stoffi, Falco J and Cadei, Riccardo and Lee, Kwonsang and Dominici, Francesca},
+  journal={arXiv preprint arXiv:2009.09036},
+  year={2023}
+}
+```
+
+CRE (software paper)
+```bibtex
 @article{Cadei2023,
   doi = {10.21105/joss.05587},
   url = {https://doi.org/10.21105/joss.05587},
@@ -238,16 +248,6 @@ Causal Rule Ensemble ([methodological paper](https://arxiv.org/abs/2009.09036))
   title = {CRE: An R package for interpretable discovery and inference of heterogeneous treatment effects},
   journal = {Journal of Open Source Software},
 }
-```
-
-CRE (software paper)
-```bibtex
-@article{cadei2023CRE,
-  title = {CRE: an R package for Interpretable Discovery and Estimation of Heterogeneous Treatment Effect},
-  author = {Cadei, Riccardo and Khoshnevis, Naeem and Bargagli-Stoffi, Falco J and Lee, Kwonsang and Garcia, Daniela Maria},
-  year = {2023},
-  journal={Working paper},
-  url = {},
 }
 ```
 
