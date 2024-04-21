@@ -57,7 +57,7 @@ test_that("Rules Extracted Correctly", {
                                    nodesize = node_size))
     forest <- randomForest::combine(forest, model1_RF)
   }
-  treelist <- inTrees::RF2List(forest)
+  treelist <- inTrees_RF2List(forest)
 
   expect_equal(length(treelist), 2)
   expect_equal(length(treelist[2]$list), 100)
