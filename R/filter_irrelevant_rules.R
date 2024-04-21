@@ -24,11 +24,11 @@ filter_irrelevant_rules <- function(rules, X, ite, t_decay) {
 
   rules_matrix <- matrix(rules)
   colnames(rules_matrix) <- "condition"
-  metric <- inTrees::getRuleMetric(rules_matrix,
+  metric <- inTrees_getRuleMetric(rules_matrix,
                                    X,
                                    ite_)
 
-  pruned <- inTrees::pruneRule(rules = metric,
+  pruned <- inTrees_pruneRule(rules = metric,
                                X = X,
                                target = ite_,
                                maxDecay = t_decay)
