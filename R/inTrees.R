@@ -500,7 +500,7 @@ getFreqPattern <-
     }
     yrhs= unique(paste("=>",ruleMetric[,"pred"],sep=""))
     trans1 <- as(rulesV, "transactions")
-    rules1 <- apriori(
+    rules1 <- arules::apriori(
       trans1,
       parameter = list(supp=minsup,conf=minconf,minlen=minlen,maxlen=maxlen),
       control = list(verbose=FALSE),

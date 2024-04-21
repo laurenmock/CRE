@@ -46,7 +46,8 @@ Imports:
     stringr,
     SuperLearner,
     magrittr,
-    ggplot2
+    ggplot2,
+    arules
 Suggests:
     grf,
     BART,
