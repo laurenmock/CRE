@@ -4,7 +4,7 @@
 * A copy of inTrees package source code.
 
 ## Removed
-* Dependency to the inTrees package
+* The inTrees package dependency
 
 # CRE 0.2.5 (2023-12-6)
 
