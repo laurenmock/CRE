@@ -74,7 +74,7 @@ estimate_cate <- function(rules_matrix, rules_explicit, ite, B=1, subsample=1) {
     for (i in 1:B) {
       index <- sample(length(ite),
                       size = round(length(ite)*subsample),
-                      replace = FALSE)
+                      replace = TRUE)
       ite_ <- ite[index]
       if (length(rules_explicit) > 0) {
         rules_matrix_ <- rules_matrix[index, ]
