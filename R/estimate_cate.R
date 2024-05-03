@@ -87,17 +87,19 @@ estimate_cate <- function(rules_matrix, rules_explicit, ite, B=1, subsample=1) {
     }
     result <- aggregate(Estimate ~ Rule,
                         data = models,
-                        FUN = function(x) c(mean = mean(x), sd = sd(x)))
+                        FUN = function(x) c(mean = mean(x),
+                                            lower = quantile(x, 0.025),
+                                            upper = quantile(x, 0.975),
+                                            pct_positive = mean(x > 0)))
     rules_explicit_ <- c("(ATE)", rules_explicit)
     result <- result[order(match(result$Rule, rules_explicit_)), ]
 
     Mean_Estimate <- result[,2][,1]
-    Std_Dev_Estimate <- result[,2][,2]
-    result$t <- Mean_Estimate / Std_Dev_Estimate
-    result$p_value <- 2 * (1 - pt(abs(result$t),
-                                  length(ite) - nrow(result)))
-    result$CI_lower <- Mean_Estimate - 1.96 * Std_Dev_Estimate
-    result$CI_upper <- Mean_Estimate + 1.96 * Std_Dev_Estimate
+    result$p_value <- ifelse(Mean_Estimate > 0,
+                             1 - result[,2][,"pct_positive"],
+                             result[,2][,"pct_positive"])
+    result$CI_lower <- result$Estimate[,2]
+    result$CI_upper <- result$Estimate[,3]
     result <- data.frame(Rule = result$Rule,
                          Estimate = Mean_Estimate,
                          CI_lower = result$CI_lower,
