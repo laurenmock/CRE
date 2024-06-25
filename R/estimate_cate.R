@@ -9,7 +9,7 @@
 #' @param rules_explicit A list of select rules in terms of covariate names.
 #' @param ite The estimated ITEs.
 #' @param B The number of bootstrap samples for uncertainty quantification in
-#' estimation.
+#' estimation. Must be equal to 1 (no bootstrapping) or at least 10.
 #' @param subsample The bootstrap ratio subsample for uncertainty quantification
 #' in estimation.
 #'
@@ -70,6 +70,9 @@ estimate_cate <- function(rules_matrix, rules_explicit, ite, B=1, subsample=1) {
     }
   }
   else {
+    if(B < 10){
+      stop("B must be equal to 1 or at least 10.")
+    }
     models <- NULL
     for (i in 1:B) {
       index <- sample(length(ite),
