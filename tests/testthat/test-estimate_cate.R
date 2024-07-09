@@ -24,7 +24,7 @@ test_that("CATE Estimation Runs Correctly (test 1/2)", {
   stability_selection <- "no"
   offset <- NULL
   intervention_vars <- NULL
-  B <- 2
+  B <- 20
   subsample <- 0.5
 
   # Check for binary outcome
@@ -132,7 +132,7 @@ test_that("CATE Estimation Runs Correctly (test 2/2)", {
   stability_selection <- "error_control"
   offset <- NULL
   intervention_vars <- NULL
-  B <- 2
+  B <- 20
   subsample <- 0.5
 
   # Check for binary outcome
