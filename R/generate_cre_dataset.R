@@ -11,16 +11,19 @@
 #' within the covariates (`rho`),  the number of decision rules
 #' (`n_rules`) decomposing the Conditional Average Treatment Effect (CATE), the
 #' treatment effect magnitude (`effect_size`), the confounding mechanism
-#' (`confounding`), and whether the covariates and outcomes are binary or
-#' continuous (`binary_covariates`, `binary_outcome`).
+#' (`confounding`), and whether the outcome is binary or continuous (`binary_outcome`),
+#' and whether the covariates are binary, continuous, or categorical
+#' (`class_covariates`).
 #'
 #' @details
 #' The covariates matrix is generated with the specified correlation among
 #' individuals, and each covariate is sampled either from a
-#' \code{Bernoulli(0.5)} if binary, or a \code{Gaussian(0,1)} if continuous.
-#' The treatment vector is sampled from a
+#' \code{Bernoulli(0.5)} if binary, a \code{Gaussian(0,1)} if continuous, or a
+#' \code{categorical("A", "B", "C")} if categorical.
+#' For binary and continuous covariates, the treatment vector is sampled from a
 #' \code{Bernoulli}(\eqn{\frac{1}{1+ \exp(1-x_1+x_2-x_3)}}), enforcing the treatment
-#' assignment probabilities to be a function of observed covariates.
+#' assignment probabilities to be a function of observed covariates. For categorical
+#' covariates, the treatment vector is sampled...(FILL IN HERE).
 #' The potential outcomes (\eqn{y(0)} and \eqn{y(1)}) are then sampled from a Bernoulli
 #' if binary, or a Gaussian (with standard deviation equal to 1) if continuous.
 #' Their mean is equal to a confounding term (null, linear or non-linear and
@@ -58,8 +61,8 @@
 #' @param effect_size The treatment effect size magnitude (default: 2,
 #' range: \eqn{\geq}0).
 #' @param p The number of covariates (default: 10).
-#' @param binary_covariates Whether to use binary or continuous covariates
-#' (default: `TRUE`).
+#' @param class_covariates Whether to use binary, continuous, or categorical
+#' covariates.
 #' @param binary_outcome Whether to use binary or continuous outcomes
 #' (default: `TRUE`).
 #' @param confounding Only for continuous outcome, add confounding variables:
@@ -75,7 +78,7 @@
 #'  \item{ite}{an individual treatment vector.}
 #'
 #' @note
-#' Set the covariates domain (`binary_covariates`) and outcome domain
+#' Set the covariates domain (`class_covariates`) and outcome domain
 #' (`binary_outcome`) according to the experiment of interest.
 #' Increase complexity in heterogeneity discovery:
 #' - decreasing the sample size (`n`),
@@ -88,38 +91,51 @@
 #' @examples
 #' set.seed(123)
 #' dataset <- generate_cre_dataset(n = 1000, rho = 0, n_rules = 2, p = 10,
-#'                                 effect_size = 2, binary_covariates = TRUE,
+#'                                 effect_size = 2, class_covariates = "binary",
 #'                                 binary_outcome = TRUE, confounding = "no")
 #'
 #' @export
 #'
 generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
-                                 effect_size = 2, binary_covariates = TRUE,
+                                 effect_size = 2,
+                                 class_covariates = "binary",
                                  binary_outcome = TRUE, confounding = "no") {
 
-  # Check for correct binary input
+  # Check for correct binary_outcome input
   if (!(binary_outcome %in% c(TRUE, FALSE))) {
-    stop("Invalid 'binary' input. Please specify TRUE or FALSE.")
+    stop("Invalid 'binary_ouctome' input. Please specify TRUE or FALSE.")
   }
   if (is.numeric(n) && !is.integer(n)) {
     n <- as.integer(n)
   }
 
   # Generate Covariate Matrix
+  if (!(class_covariates %in% c("binary", "continuous", "categorical"))) {
+    stop("Invalid 'class_covariates' input. Please specify binary,
+         continuous, or categorical.")
+  }
   mu <- rep(0, p)
   Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
   rawvars <- MASS::mvrnorm(n = n, mu = mu, Sigma = Sigma)
   pvars <- stats::pnorm(rawvars)
-  if (binary_covariates) {
+  if (class_covariates == "binary") {
     X <- stats::qbinom(pvars, 1, 0.5)
-  } else {
+  } else if(class_covariates == "continuous") {
     X <- pvars
+  } else {
+    X <- matrix(sample(c("A", "B", "C"), n*p, replace = TRUE),
+                nrow = n, ncol = p)
   }
   colnames(X) <- paste("x", 1:p, sep = "")
   X <- as.data.frame(X)
 
   # Generate Treatment Vector
-  logit_prob <- -1 + X$x1 - X$x2 + X$x3
+  if(class_covariates %in% c("binary", "continuous")){
+    logit_prob <- -1 + X$x1 - X$x2 + X$x3
+  } else {
+    logit_prob <- -1 + ifelse(X$x1 == "A", 2, 1) - ifelse(X$x2 == "C", 1, 3) +
+      ifelse(X$x3 == "B", 1, 0)
+  }
   prob <- exp(logit_prob) / (1 + exp(logit_prob))
   z <- stats::rbinom(n, 1, prob = prob)
 
