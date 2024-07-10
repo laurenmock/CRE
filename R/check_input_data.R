@@ -80,10 +80,6 @@ check_input_data <- function(y, z, X, ite = NULL) {
     stop(paste("Invalid 'X' input. Please input a matrix or data frame",
                " of numeric variables"))
   }
-  if (!all(apply(X, 2, class) %in% c("integer", "numeric"))) {
-    stop(paste("Invalid 'X' input. Please input a matrix or data frame",
-               " of numeric variables"))
-  }
   if (N != N_check) {
     stop(paste("Response and X dataframe should have the ",
                "same number of observations.",

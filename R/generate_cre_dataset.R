@@ -11,7 +11,7 @@
 #' within the covariates (`rho`),  the number of decision rules
 #' (`n_rules`) decomposing the Conditional Average Treatment Effect (CATE), the
 #' treatment effect magnitude (`effect_size`), the confounding mechanism
-#' (`confounding`), and whether the outcome is binary or continuous (`binary_outcome`),
+#' (`confounding`), whether the outcome is binary or continuous (`binary_outcome`),
 #' and whether the covariates are binary, continuous, or categorical
 #' (`class_covariates`).
 #'
@@ -60,12 +60,13 @@
 #' @param n_rules The number of causal rules (default: 2, range: \{1,2,3,4\}).
 #' @param effect_size The treatment effect size magnitude (default: 2,
 #' range: \eqn{\geq}0).
-#' @param p The number of covariates (default: 10).
+#' @param p The number of covariates (default: 10, minimum: 8).
 #' @param class_covariates Whether to use binary, continuous, or categorical
 #' covariates.
 #' @param binary_outcome Whether to use binary or continuous outcomes
 #' (default: `TRUE`).
-#' @param confounding Only for continuous outcome, add confounding variables:
+#' @param confounding Only for continuous outcome and binary or continuous covariates,
+#' add confounding variables:
 #' - \code{"lin"} for linear confounding,
 #' - \code{"nonlin"} for non-linear confounding,
 #' - \code{"no"} for no confounding (default).
@@ -114,6 +115,10 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
     stop("Invalid 'class_covariates' input. Please specify binary,
          continuous, or categorical.")
   }
+  if(p < 8){
+    stop("Invalid 'p' input; 'p' must be greater than or equal to 8.")
+  }
+
   mu <- rep(0, p)
   Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
   rawvars <- MASS::mvrnorm(n = n, mu = mu, Sigma = Sigma)
@@ -129,7 +134,7 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
   colnames(X) <- paste("x", 1:p, sep = "")
   X <- as.data.frame(X)
 
-  # Generate Treatment Vector
+  # Generate Treatment Vector with first three covariates
   if(class_covariates %in% c("binary", "continuous")){
     logit_prob <- -1 + X$x1 - X$x2 + X$x3
   } else {
@@ -140,7 +145,7 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
   z <- stats::rbinom(n, 1, prob = prob)
 
   # Generate Causal Rules and Potential Outcomes
-  if (binary_outcome == TRUE) {
+  if (binary_outcome == TRUE | class_covariates == "categorical") {
     y0 <- rep(0, n)
     y1 <- rep(0, n)
     effect_size <- 1
@@ -161,10 +166,18 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
     y1 <- y0
   }
   if (n_rules >= 1) {
-    y0[X$x1 > 0.5 & X$x2 <= 0.5] <- y0[X$x1 > 0.5 & X$x2 <= 0.5] + effect_size
+    if(class_covariates %in% c("binary", "continuous")){
+      y0[X$x1 > 0.5 & X$x2 <= 0.5] <- y0[X$x1 > 0.5 & X$x2 <= 0.5] + effect_size
+    } else {
+      y0[X$x1 == "A" & X$x2 == "C"] <- y0[X$x1 == "A" & X$x2 == "C"] + effect_size
+    }
   }
   if (n_rules >= 2) {
-    y1[X$x5 > 0.5 & X$x6 <= 0.5] <- y1[X$x5 > 0.5 & X$x6 <= 0.5] + effect_size
+    if(class_covariates %in% c("binary", "continuous")){
+      y1[X$x5 > 0.5 & X$x6 <= 0.5] <- y1[X$x5 > 0.5 & X$x6 <= 0.5] + effect_size
+    } else {
+      y1[X$x5 == "B" & X$x6  == "A"] <- y1[X$x5 == "B" & X$x6  == "A"] + effect_size
+    }
   }
   if (n_rules >= 3) {
     if (binary_outcome) {
@@ -172,7 +185,11 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
                  "rules has not been implemented yet. ",
                  "Available 'n_rules' options: {1,2}."))
     }
-    y0[X$x4 <= 0.5] <- y0[X$x4 <= 0.5] + 0.5 * effect_size
+    if(class_covariates %in% c("binary", "continuous")){
+      y0[X$x4 <= 0.5] <- y0[X$x4 <= 0.5] + 0.5 * effect_size
+    } else {
+      y0[X$x4 == "B"] <- y0[X$x4 == "B"] + 0.5 * effect_size
+    }
   }
   if (n_rules >= 4) {
     y1[X$x5 <= 0.5 & X$x7 > 0.5 & X$x8 <= 0.5] <-
@@ -183,7 +200,6 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
                "rules has not been implemented yet. ",
                "Available 'n_rules' options: {1,2,3,4}."))
   }
-
 
   # Generate Outcome
   y <- y0 * (1 - z) + y1 * z
