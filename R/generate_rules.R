@@ -26,7 +26,7 @@ generate_rules <- function(X, ite, ntrees, node_size, max_rules, max_depth) {
   if (ntrees > 0) {
     N <- dim(X)[1]
     sampsize <- 0.5 * N
-    forest <- randomForest::randomForest(x = X,
+    forest <- randomForest::randomForest(x = as.data.frame(X),
                                          y = ite,
                                          sampsize = sampsize,
                                          ntree = ntrees,
