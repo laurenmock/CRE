@@ -24,7 +24,7 @@ honest_splitting <- function(y, z, X, ratio_dis, ite = NULL) {
 
   index <- sample(1:n, round(n * ratio_dis), replace = FALSE)
 
-  X <- as.matrix(X)
+  #X <- as.matrix(X)
   y <- as.matrix(y)
   z <- as.matrix(z)
   if (!is.null(ite)) {
