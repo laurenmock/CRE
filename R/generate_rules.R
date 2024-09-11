@@ -42,10 +42,14 @@ generate_rules <- function(X, ite, ntrees, node_size, max_rules, max_depth) {
 
   rule_counts <- table(unlist(rules))
   M <- min(max_rules, length(rule_counts))
-  rules <- names(sort(rule_counts, decreasing = TRUE)[1:M])
+  rule_counts <- sort(rule_counts, decreasing = TRUE)
+
+  rules_list <- list(rules = names(rule_counts), freq = 100 * as.numeric(rule_counts)/ncol(X)*2/3)
+
+  rule_counts <- rule_counts[1:M]
 
   en_time <- proc.time()
   logger::log_debug("Done with generating (candidate) rules.. ",
                     "(WC: {g_wc_str(st_time, en_time)}", ".)")
-  return(rules)
+  return(rules_list)
 }
