@@ -14,7 +14,7 @@ estimate_cate(rules_matrix, rules_explicit, ite, B = 1, subsample = 1)
 \item{ite}{The estimated ITEs.}
 
 \item{B}{The number of bootstrap samples for uncertainty quantification in
-estimation.}
+estimation. Must be equal to 1 (no bootstrapping) or at least 10.}
 
 \item{subsample}{The bootstrap ratio subsample for uncertainty quantification
 in estimation.}

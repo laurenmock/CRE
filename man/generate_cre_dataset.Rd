@@ -10,7 +10,7 @@ generate_cre_dataset(
   n_rules = 2,
   p = 10,
   effect_size = 2,
-  binary_covariates = TRUE,
+  class_covariates = "binary",
   binary_outcome = TRUE,
   confounding = "no"
 )
@@ -24,18 +24,19 @@ within the covariates (default: 0, range: [0,1)).}
 
 \item{n_rules}{The number of causal rules (default: 2, range: \{1,2,3,4\}).}
 
-\item{p}{The number of covariates (default: 10).}
+\item{p}{The number of covariates (default: 10, minimum: 8).}
 
 \item{effect_size}{The treatment effect size magnitude (default: 2,
 range: \eqn{\geq}0).}
 
-\item{binary_covariates}{Whether to use binary or continuous covariates
-(default: \code{TRUE}).}
+\item{class_covariates}{Whether to use binary, continuous, or categorical
+covariates.}
 
 \item{binary_outcome}{Whether to use binary or continuous outcomes
 (default: \code{TRUE}).}
 
-\item{confounding}{Only for continuous outcome, add confounding variables:
+\item{confounding}{Only for continuous outcome and binary or continuous covariates,
+add confounding variables:
 \itemize{
 \item \code{"lin"} for linear confounding,
 \item \code{"nonlin"} for non-linear confounding,
@@ -59,18 +60,22 @@ number of individuals (\code{n}), the number of covariates (\code{p}), the corre
 within the covariates (\code{rho}),  the number of decision rules
 (\code{n_rules}) decomposing the Conditional Average Treatment Effect (CATE), the
 treatment effect magnitude (\code{effect_size}), the confounding mechanism
-(\code{confounding}), and whether the covariates and outcomes are binary or
-continuous (\code{binary_covariates}, \code{binary_outcome}).
+(\code{confounding}), whether the outcome is binary or continuous (\code{binary_outcome}),
+and whether the covariates are binary, continuous, or categorical
+(\code{class_covariates}).
 }
 \details{
 The covariates matrix is generated with the specified correlation among
 individuals, and each covariate is sampled either from a
-\code{Bernoulli(0.5)} if binary, or a \code{Gaussian(0,1)} if continuous.
-The treatment vector is sampled from a
+\code{Bernoulli(0.5)} if binary, a \code{Gaussian(0,1)} if continuous, or a
+\code{categorical("A", "B", "C", "D", "E", "F")} if categorical.
+For binary and continuous covariates, the treatment vector is sampled from a
 \code{Bernoulli}(\eqn{\frac{1}{1+ \exp(1-x_1+x_2-x_3)}}), enforcing the treatment
-assignment probabilities to be a function of observed covariates.
+assignment probabilities to be a function of observed covariates. For categorical
+covariates, the treatment vector is determined by assigning numerical values to
+\eqn{x_1, x_2, x_3}.
 The potential outcomes (\eqn{y(0)} and \eqn{y(1)}) are then sampled from a Bernoulli
-if binary, or a Gaussian (with standard deviation equal to 1) if continuous.
+if binary, a Gaussian (with standard deviation equal to 1) if continuous.
 Their mean is equal to a confounding term (null, linear or non-linear and
 always null for binary outcome) plus 1-4 decision rules weighted by the
 treatment effect magnitude. The two potential outcomes characterizes the CATE
@@ -101,7 +106,7 @@ The final outcome vector \code{y} is finally computed by combining the potential
 outcomes according to the treatment assignment.
 }
 \note{
-Set the covariates domain (\code{binary_covariates}) and outcome domain
+Set the covariates domain (\code{class_covariates}) and outcome domain
 (\code{binary_outcome}) according to the experiment of interest.
 Increase complexity in heterogeneity discovery:
 \itemize{
@@ -116,7 +121,7 @@ Increase complexity in heterogeneity discovery:
 \examples{
 set.seed(123)
 dataset <- generate_cre_dataset(n = 1000, rho = 0, n_rules = 2, p = 10,
-                                effect_size = 2, binary_covariates = TRUE,
+                                effect_size = 2, class_covariates = "binary",
                                 binary_outcome = TRUE, confounding = "no")
 
 }
