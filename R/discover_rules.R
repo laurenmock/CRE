@@ -19,12 +19,13 @@
 discover_rules <- function(X, ite, method_params, hyper_params) {
 
   # Generate rules -------------------------------------------------------------
-  rules <- generate_rules(X,
+  rules_list <- generate_rules(X,
                           ite,
                           getElement(hyper_params, "ntrees"),
                           getElement(hyper_params, "node_size"),
                           getElement(hyper_params, "max_rules"),
                           getElement(hyper_params, "max_depth"))
+  rules <- rules_list$rules
   M_initial <- length(rules)
   # Filtering ------------------------------------------------------------------
 
@@ -64,5 +65,5 @@ discover_rules <- function(X, ite, method_params, hyper_params) {
             "filter_correlated" = M_filter3,
             "select_LASSO" = M_select1)
 
-  return(list(rules = rules, M = M))
+  return(list(rules = rules, rules_list = rules_list, M = M))
 }
