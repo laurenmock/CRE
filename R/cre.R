@@ -182,6 +182,20 @@ cre <- function(y, z, X,
                               hyper_params)
   rules <- discovery[["rules"]]
   M <- discovery[["M"]]
+  rules_list <- discovery[["rules_list"]]
+
+
+  # Make names in rules_list interpretable (use variable names)
+  if (length(rules) == 0) {
+    rules_list[["rules"]] <- c()
+  } else {
+    if (!is.null(hyper_params$intervention_vars)) {
+      covariate_names <- hyper_params$intervention_vars
+    } else {
+      covariate_names <- colnames(as.data.frame(X))
+    }
+    rules_list[["rules"]] <- interpret_rules(rules_list[["rules"]], covariate_names)
+  }
 
   en_time_rd <- proc.time()
   logger::log_info("Done with rules discovery. ",
@@ -249,7 +263,8 @@ cre <- function(y, z, X,
                   "CATE" = cate_inf,
                   "method_params" = method_params,
                   "hyper_params" = hyper_params,
-                  "rules" = rules)
+                  "rules" = rules,
+                  "rule_freq_list" = rules_list)
   attr(results, "class") <- "cre"
 
   # Return Results -------------------------------------------------------------
