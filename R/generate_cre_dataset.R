@@ -19,13 +19,14 @@
 #' The covariates matrix is generated with the specified correlation among
 #' individuals, and each covariate is sampled either from a
 #' \code{Bernoulli(0.5)} if binary, a \code{Gaussian(0,1)} if continuous, or a
-#' \code{categorical("A", "B", "C")} if categorical.
+#' \code{categorical("A", "B", "C", "D", "E", "F")} if categorical.
 #' For binary and continuous covariates, the treatment vector is sampled from a
 #' \code{Bernoulli}(\eqn{\frac{1}{1+ \exp(1-x_1+x_2-x_3)}}), enforcing the treatment
 #' assignment probabilities to be a function of observed covariates. For categorical
-#' covariates, the treatment vector is sampled...(FILL IN HERE).
+#' covariates, the treatment vector is determined by assigning numerical values to
+#' \eqn{x_1, x_2, x_3}.
 #' The potential outcomes (\eqn{y(0)} and \eqn{y(1)}) are then sampled from a Bernoulli
-#' if binary, or a Gaussian (with standard deviation equal to 1) if continuous.
+#' if binary, a Gaussian (with standard deviation equal to 1) if continuous.
 #' Their mean is equal to a confounding term (null, linear or non-linear and
 #' always null for binary outcome) plus 1-4 decision rules weighted by the
 #' treatment effect magnitude. The two potential outcomes characterizes the CATE
@@ -128,11 +129,15 @@ generate_cre_dataset <- function(n = 1000, rho = 0, n_rules = 2, p = 10,
   } else if(class_covariates == "continuous") {
     X <- pvars
   } else {
-    X <- matrix(sample(c("A", "B", "C"), n*p, replace = TRUE),
+    X <- matrix(sample(c("A", "B", "C", "D", "E", "F"), n*p, replace = TRUE),
                 nrow = n, ncol = p)
   }
   colnames(X) <- paste("x", 1:p, sep = "")
   X <- as.data.frame(X)
+
+  if(class_covariates == "categorical"){
+    X <- data.frame(lapply(X, factor))
+  }
 
   # Generate Treatment Vector with first three covariates
   if(class_covariates %in% c("binary", "continuous")){
