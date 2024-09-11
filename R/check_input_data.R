@@ -72,13 +72,10 @@ check_input_data <- function(y, z, X, ite = NULL) {
   }
 
   # Covariates
-  if (is.matrix(X)) {
-    N_check <- nrow(X)
-  } else if (is.data.frame(X)) {
+  if (is.data.frame(X)) {
     N_check <- nrow(X)
   } else {
-    stop(paste("Invalid 'X' input. Please input a matrix or data frame",
-               " of numeric variables"))
+    stop(paste("Invalid 'X' input. Please input a data frame"))
   }
   if (N != N_check) {
     stop(paste("Response and X dataframe should have the ",
